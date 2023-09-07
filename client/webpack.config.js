@@ -11,21 +11,20 @@ plugins: [
     template: './index.html', // Specify your HTML template file
   }),
   new WebpackPwaManifest({
-    name: 'Just Another Text Editor', // Your app's name
-    short_name: 'JATE', // Short name for your app
-    description: 'A text editor app', // Description for your app
-    background_color: '#ffffff', // Background color
-    theme_color: '#000000', // Theme color
-    icons: [
-      {
-        src: path.resolve('src/imgages/logo.png'), // Path to your app's icon
-        sizes: [96, 128, 192, 256, 384, 512], // Icon sizes
-        destination: path.join("assets", "icons"), // Destination folder for icons
+    name: 'Just Another Text Editor', 
+    short_name: 'JATE', 
+    description: 'A text editor app', 
+    background_color: '#ffffff', 
+    theme_color: '#000000', 
+     icons:[ {
+        src: path.resolve('src/imgages/logo.png'), 
+        sizes: [96, 128, 192, 256, 384, 512], 
+        destination: path.join("assets", "icons"), 
       },
     ],
   }),
   new InjectManifest({
-    swSrc: './src/sw.js', // Path to your service worker file
+    swSrc: './src/sw.js', 
     swDest: 'src-sw.js',
   }),
 ],
@@ -47,7 +46,20 @@ module.exports = () => {
 
     module: {
       rules: [
-        
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env'],
+            },
+          },
+        },
+        {
+          test: /\.css$/,
+          use: ['style-loader', 'css-loader'],
+        },
       ],
     },
   };
