@@ -25,21 +25,19 @@ warmStrategyCache({
 });
 
 registerRoute(({ request }) => request.mode === 'navigate', pageCache);
-const assetCacheName = 'asset-cache';
-
-
-const assetStrategy = new CacheFirst({
-  cacheName: assetCacheName,
-  plugins: [
-    //Can add additional plugins here if needed
-  ],
-});
-
 
 registerRoute(
-  ({ request }) =>
-    request.destination === 'script' ||
-    request.destination === 'style' ||
-    request.destination === 'image',
-  assetStrategy
-);
+  ({ request }) => ['style', 'script', 'worker'].includes(request.destination),
+  new CacheFirst({
+    cacheName: 'asset-cache',
+    plugins: [
+  // This plugin will cache responses with these headers to a maximum-age of 30 days
+  new CacheableResponsePlugin({
+    statuses: [0, 200],
+  }),
+  new ExpirationPlugin({
+    maxEntries: 50,
+    maxAgeSeconds: 30 * 24 * 60 * 60,
+  }),
+],
+}));

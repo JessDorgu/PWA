@@ -6,7 +6,7 @@ const initdb = async () => {
     upgrade(db) {
       if (!db.objectStoreNames.contains('jate')) {
         const store = db.createObjectStore('jate', { keyPath: 'id', autoIncrement: true });
-        store.createIndex('content', 'content', { unique: false }); // Add an index for content
+        store.createIndex('content', 'content', { unique: false }); 
         console.log('jate database created');
       }
     },
